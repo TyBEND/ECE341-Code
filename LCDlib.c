@@ -18,9 +18,11 @@ int main()
     char string2[] = "Answer: \116\145\151\164\150\145\162\041";
     while(1)
     {
+        writeLCD(0,1);
         LCD_puts(string1);
         sw_delay(5000);
  
+        writeLCD(0,1);
         LCD_puts(string2);
         sw_delay(5000);
     }
@@ -55,7 +57,7 @@ void LCD_putc(char c)
 {
     char x;
     while(busyLCD());
-    x = readLCD(c);
+    x = readLCD(0);
     switch (c)
     {
         case '\r':
