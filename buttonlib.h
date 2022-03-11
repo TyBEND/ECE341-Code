@@ -15,14 +15,9 @@
 #define T1_TICK (FPB/T1_PRESCALE/TOGGLES_PER_SEC)
 
 /* Function prototypes */
-unsigned int stepper_state_machine(unsigned int step_dir, unsigned int step_mode);
-void output_to_stepper_motor(unsigned int motor_code);
-void __ISR(_TIMER_1_VECTOR, IPL2) Timer1_ISR(void);
 
-
-
-//void Timer1_delay(int delay, unsigned int *button_delay, unsigned int *step);
-
-
-
+unsigned int read_buttons(void);
+void decode_buttons(unsigned int buttons);
+void __ISR(_CHANGE_NOTICE_VECTOR, IPL1) change_notice_ISR(void);
+void debounce(unsigned int mS);
 /* End of Project5.h */

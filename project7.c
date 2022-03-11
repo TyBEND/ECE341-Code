@@ -14,8 +14,13 @@
 #include "comm.h"
 #include "LCDlib.h"
 #include <string.h>
-#include "motorcode.c"
+// #include "motorcode.c"
 #include "motorcode.h"
+// #include "buttonlib.c"
+#include "buttonlib.h"
+
+unsigned int step_dir, step_mode, step_delay, motor_code;
+int step;
 
 void system_init(void);
 

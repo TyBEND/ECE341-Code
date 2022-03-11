@@ -11,59 +11,9 @@
 #include "CerebotMX7cK.h"
 #include "motorcode.h"
 
-unsigned int step_dir, step_mode, step_delay, motor_code;
-int step;
+extern unsigned int step_dir, step_mode, step_delay, motor_code;
+extern int step;
 
-
-void __ISR(_CHANGE_NOTICE_VECTOR, IPL1) change_notice_ISR(void)
-{
-    /* User ISR code inserted here */
-    LATBSET = LEDC;
-    debounce(20);
-    int button_status;
-    button_status = read_buttons();
-    decode_buttons(button_status);
-
-    /* Required to clear the interrupt flag in the ISR */
-    mCNClearIntFlag(); // Macro function
-    LATBCLR = LEDC;
-}
-
-unsigned int read_buttons(void)
-{
-    // Student supplied code inserted here
-    int btn_value = 0;
-    btn_value = PORTReadBits(IOPORT_G, BTN1 | BTN2);
-    return btn_value;
-}
-
-void decode_buttons(unsigned int buttons)
-{
-    /* Student supplied code inserted here */
-    switch(buttons)
-        {
-        case 0:                //neither BTN1 or BTN2 are pressed
-            step_dir = CW;
-            step_mode = HS;
-            step_delay = 20;
-            break;
-        case 64:               //Just BTN1 is pressed
-            step_dir = CW;
-            step_mode = FS;
-            step_delay = 40;
-            break;
-        case 128:              //Just BTN2 is pressed
-            step_dir = CCW;
-            step_mode = HS;
-            step_delay = 30;
-            break;
-        case 192:              //Both BTNs are pressed
-            step_dir = CCW;
-            step_mode = FS;
-            step_delay = 24;
-            break;
-    }
-}
 void __ISR(_TIMER_1_VECTOR, IPL2) Timer1_ISR(void)
 {
     /* User generated code to service the interrupt is inserted here */
@@ -208,31 +158,5 @@ void output_to_stepper_motor(unsigned int motor_code)
     LATBCLR = SM_COILS;
     LATBSET = motor_code << 7;
 }
-
-void debounce(unsigned int mS)
-{
-/* Use code from Listing 4 */
-unsigned int tWait, tStart;
-    tStart=ReadCoreTimer(); // Read core timer count - SW Start breakpoint
-    tWait= (CORE_MS_TICK_RATE * mS); // Set time to wait 
-    while((ReadCoreTimer() - tStart) < tWait); // Wait for the time to pass
-}         
-
-
-
-/*
-void Timer1_delay(int delay, unsigned int *button_delay, unsigned int *step)
-{
-    while(delay--)
-    {    
-        while(!mT1GetIntFlag());
-        mT1ClearIntFlag();
-        LATBINV = LEDA;
-        *button_delay = *button_delay - 1;
-        *step = *step - 1;
-    }
-}
-*/
-
 
 /* End of Project5.c */
