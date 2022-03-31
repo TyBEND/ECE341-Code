@@ -70,5 +70,5 @@ int I2CWriteEEPROM(int SlaveAddr, int mem_addr, char *i2cData, int len) {
       }
       return(0);
   }
-  
+} 
   
