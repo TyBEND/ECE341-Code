@@ -46,7 +46,7 @@ int I2CWriteEEPROM(int SlaveAddr, int mem_addr, char *i2cData, int len) {
       {
           StopI2C2();
           IdleI2C2();
-          waitI2C2(SlaveAddr);
+          wait_i2c(SlaveAddr);
           StopI2C2();
           IdleI2C2();
           return(0);
@@ -55,7 +55,7 @@ int I2CWriteEEPROM(int SlaveAddr, int mem_addr, char *i2cData, int len) {
       {                     // If there is no remainder, it went on to the next page
           StopI2C2();
           IdleI2C2();
-          waitI2C2(SlaveAddr);
+          wait_i2c(SlaveAddr);
           StopI2C2();
           IdleI2C2();
           mem_MSB = mem_addr >> 8;
