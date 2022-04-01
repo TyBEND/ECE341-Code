@@ -9,7 +9,8 @@ void init_I2C2(){
 int I2CReadEEPROM(int SlaveAddr, int mem_addr, char *i2cData, int len)
 {
     unsigned char read_err=0;
-    unsigned int mem_MSB, mem_LSB;
+    unsigned int mem_MSB, mem_LSB, index;
+    index = 0;
   
     if((mem_addr + len) > 0x7FFF){ // check if at end of memory
         return(1);                 // return error if true
@@ -34,6 +35,7 @@ int I2CReadEEPROM(int SlaveAddr, int mem_addr, char *i2cData, int len)
         *i2cData = MasterReadI2C2();
         *i2cData++;
         mem_addr++;
+        index++;
         len--;
     
         if(len == 0)      // Checks if there are no more bytes

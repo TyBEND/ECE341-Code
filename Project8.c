@@ -3,7 +3,7 @@
 #include "I2Clib.h"
 #include "LCDlib.h"
 
-#define LEN 4;
+#define LEN 100
 
 char BusyI2C2(void) { // non-blocking version of IdleI2C2()
     return(I2C2CONbits.SEN || I2C2CONbits.PEN || I2C2CONbits.RSEN ||
@@ -24,8 +24,8 @@ int main(void){
     int len = LEN;
     int i = 0;
     
-    char i2cdataWrite[len];                  // Initialize Write array
-	char i2cdataRead[len];                   // Initialize Read array
+    char i2cdataWrite[LEN];                  // Initialize Write array
+
     
     for (i = 0; i < len; i++)     //Build character array for write
     {
@@ -34,6 +34,9 @@ int main(void){
     
     // Check read and write errors
     int write_err = I2CWriteEEPROM(SlaveAddress, mem_address, i2cdataWrite, len);
+    
+    char i2cdataRead[LEN];                   // Initialize Read array
+        
     int read_err = I2CReadEEPROM(SlaveAddress, mem_address, i2cdataRead, len);
     
     
