@@ -1,6 +1,7 @@
 #include <plib.h>
 #include "CerebotMX7cK.h"
 #include "I2Clib.h"
+#include "LCDlib.h"
 
 #define LEN 4;
 
@@ -13,7 +14,7 @@ int main(void){
     
     // Initialize resources
     Cerebot_mx7cK_setup();
-    
+    LCD_init();
     init_I2C2();
     if (BusyI2C2()) return(1); // I2C bus not ready... is waiting til all or'ed bits are cleared
     
@@ -21,7 +22,7 @@ int main(void){
     unsigned int SlaveAddress = 0x50;
     unsigned int mem_address = 0x04FB;
     int len = LEN;
-    int index, i = 0;
+    int i = 0;
     
     char i2cdataWrite[len];                  // Initialize Write array
 	char i2cdataRead[len];                   // Initialize Read array
@@ -35,22 +36,17 @@ int main(void){
     int write_err = I2CWriteEEPROM(SlaveAddress, mem_address, i2cdataWrite, len);
     int read_err = I2CReadEEPROM(SlaveAddress, mem_address, i2cdataRead, len);
     
-    if (write_err != 0)
-	{
-		return 1;
-	}
-    
-    if (read_err != 0)
-	{
-		return 1;
-	}
     
     for (i = 0; i < len; i++)
 	{
 		if (i2cdataRead[i] != i2cdataWrite[i])
 		{
+            writeLCD(0,1);
+            LCD_puts("Test Failed");
 			return 1;
 		}
 	}
+    writeLCD(0,1);
+    LCD_puts("Test Passed");
 	return 0;
 }

@@ -6,7 +6,6 @@ void init_I2C2(){
     OpenI2C2( I2C_EN, BRG_VAL); // Enable I2C Peripheral which is physically connected to EEPROM
 }
 
-
 int I2CReadEEPROM(int SlaveAddr, int mem_addr, char *i2cData, int len)
 {
     unsigned char read_err=0;
@@ -14,10 +13,6 @@ int I2CReadEEPROM(int SlaveAddr, int mem_addr, char *i2cData, int len)
   
     if((mem_addr + len) > 0x7FFF){ // check if at end of memory
         return(1);                 // return error if true
-    }
-  
-    if(i2cData = NULL){        //check to make sure buffer is given a value 
-        return(1);
     }
   
     if(len == 0){  // checks to make sure bytes are being written
@@ -55,8 +50,8 @@ int I2CReadEEPROM(int SlaveAddr, int mem_addr, char *i2cData, int len)
         {
             return(1);          
         }
-        return(0);
     }
+    return(0);
 }
 
 int I2CWriteEEPROM(int SlaveAddr, int mem_addr, char *i2cData, int len)
@@ -69,9 +64,6 @@ int I2CWriteEEPROM(int SlaveAddr, int mem_addr, char *i2cData, int len)
         return(1);                 // return error if true
     }
   
-    if(i2cData = NULL){        //check to make sure buffer is given a value 
-        return(1);
-    }
   
     if(len == 0){  // checks to make sure bytes are being written
         return(1);
@@ -118,8 +110,8 @@ int I2CWriteEEPROM(int SlaveAddr, int mem_addr, char *i2cData, int len)
         {
             return(1);          
         }
-        return(0);
     }
+    return(0);
 }
 
 // Poll EEPROM
