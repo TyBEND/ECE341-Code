@@ -16,9 +16,9 @@ int I2CReadEEPROM(int SlaveAddr, int mem_addr, char *i2cData, int len)
     mem_LSB = mem_addr & 0x00FF;
     StartI2C2();
     IdleI2C2();
-    read_err |= MasterWriteI2C2((SlaveAddr << 1) | 0); // Checks ack bytes for Control Byte
-    read_err |= MasterWriteI2C2(mem_MSB); // Checks ack for MSB
-    read_err |= MasterWriteI2C2(mem_LSB); // Checks ack for LSB
+    read_err |= MasterWriteI2C2((SlaveAddr << 1) | 0); // Checks Control Byte
+    read_err |= MasterWriteI2C2(mem_MSB); // Checks MSB
+    read_err |= MasterWriteI2C2(mem_LSB); // Checks LSB
     RestartI2C2(); // Reverse I2C Bus Direction
     IdleI2C2();
     MasterWriteI2C2( (SlaveAddr << 1) | 1); // pastes a 1 into rightmost bit
@@ -58,9 +58,9 @@ int I2CWriteEEPROM(int SlaveAddr, int mem_addr, char *i2cData, int len)
     
     StartI2C2();
     IdleI2C2();
-    write_err |= MasterWriteI2C2((SlaveAddr << 1) | 0); // Checks ack bytes for Control Byte
-    write_err |= MasterWriteI2C2(mem_MSB); // Checks ack for MSB
-    write_err |= MasterWriteI2C2(mem_LSB); // Checks ack for LSB
+    write_err |= MasterWriteI2C2((SlaveAddr << 1) | 0); // Checks Control Byte
+    write_err |= MasterWriteI2C2(mem_MSB); // Checks MSB
+    write_err |= MasterWriteI2C2(mem_LSB); // Checks LSB
     while(len--) // Runs through each byte
     {
         write_err |= MasterWriteI2C2(i2cData[index]); // checks to make sure ack byte is triggered
