@@ -26,7 +26,6 @@ int main(void){
     
     char i2cdataWrite[LEN];                  // Initialize Write array
 
-    
     for (i = 0; i < len; i++)     //Build character array for write
     {
         i2cdataWrite[i] = '0' + i %10;
@@ -38,18 +37,17 @@ int main(void){
     char i2cdataRead[LEN];                   // Initialize Read array
         
     int read_err = I2CReadEEPROM(SlaveAddress, mem_address, i2cdataRead, len);
-    
-    
+     
     for (i = 0; i < len; i++)
 	{
 		if (i2cdataRead[i] != i2cdataWrite[i])
 		{
-            writeLCD(0,1);
-            LCD_puts("Test Failed");
+           		writeLCD(0,1);
+            		LCD_puts("Test Failed");
 			return 1;
 		}
 	}
     writeLCD(0,1);
     LCD_puts("Test Passed");
-	return 0;
+    return 0;
 }
