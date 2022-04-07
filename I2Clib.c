@@ -11,15 +11,7 @@ int I2CReadEEPROM(int SlaveAddr, int mem_addr, char *i2cData, int len)
     unsigned char read_err=0;
     unsigned int mem_MSB, mem_LSB, index;
     index = 0;
-  
-    if((mem_addr + len) > 0x7FFF){ // check if at end of memory
-        return(1);                 // return error if true
-    }
-  
-    if(len == 0){  // checks to make sure bytes are being written
-        return(1);
-    }
-    
+ 
     mem_MSB = mem_addr >> 8;
     mem_LSB = mem_addr & 0x00FF;
     StartI2C2();
@@ -30,13 +22,12 @@ int I2CReadEEPROM(int SlaveAddr, int mem_addr, char *i2cData, int len)
     RestartI2C2(); // Reverse I2C Bus Direction
     IdleI2C2();
     MasterWriteI2C2( (SlaveAddr << 1) | 1); // pastes a 1 into rightmost bit
-    while(len > 0) // Runs through each byte
+    while(len--) // Runs through each byte
     {
         *i2cData = MasterReadI2C2();
         *i2cData++;
         mem_addr++;
         index++;
-        len--;
     
         if(len == 0)      // Checks if there are no more bytes
         {
@@ -61,16 +52,7 @@ int I2CWriteEEPROM(int SlaveAddr, int mem_addr, char *i2cData, int len)
     unsigned char write_err=0;
     unsigned int mem_MSB, mem_LSB, index;
     index = 0;
-    
-    if((mem_addr + len) > 0x7FFF){ // check if at end of memory
-        return(1);                 // return error if true
-    }
-  
-  
-    if(len == 0){  // checks to make sure bytes are being written
-        return(1);
-    }
-  
+
     mem_MSB = mem_addr >> 8;
     mem_LSB = mem_addr & 0x00FF;
     
@@ -79,12 +61,11 @@ int I2CWriteEEPROM(int SlaveAddr, int mem_addr, char *i2cData, int len)
     write_err |= MasterWriteI2C2((SlaveAddr << 1) | 0); // Checks ack bytes for Control Byte
     write_err |= MasterWriteI2C2(mem_MSB); // Checks ack for MSB
     write_err |= MasterWriteI2C2(mem_LSB); // Checks ack for LSB
-    while(len > 0) // Runs through each byte
+    while(len--) // Runs through each byte
     {
         write_err |= MasterWriteI2C2(i2cData[index]); // checks to make sure ack byte is triggered
         index++;
         mem_addr++;
-        len--;
     
         if(len == 0)      // Checks if there are no more bytes
         {
@@ -127,4 +108,24 @@ int wait_i2c(int SlaveAddr){
     StopI2C2(); // Got an ACK. Write complete.
     IdleI2C2();
 }
+// Originally in read
+  /*
+    if((mem_addr + len) > 0x7FFF){ // check if at end of memory
+        return(1);                 // return error if true
+    }
   
+    if(len == 0){  // checks to make sure bytes are being written
+        return(1);
+    }
+ */  
+// Originally in write
+ /*   
+    if((mem_addr + len) > 0x7FFF){ // check if at end of memory
+        return(1);                 // return error if true
+    }
+  
+  
+    if(len == 0){  // checks to make sure bytes are being written
+        return(1);
+    }
+  */
