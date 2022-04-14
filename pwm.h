@@ -10,4 +10,5 @@
 
 /* Function prototypes */
 int pwm_init(int dutyCycle, int cycleFrequency);
-void __ISR( _TIMER_2_VECTOR, IPL2) Timer2_ISR(void);
+int pwm_set(int dutyCycle);
+// void __ISR( _TIMER_2_VECTOR, IPL2) Timer2_ISR(void);

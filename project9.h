@@ -13,3 +13,7 @@
 
 /* Function prototypes */
 void system_init(void);
+unsigned int read_buttons(void);
+void decode_buttons(unsigned int buttons);
+// void __ISR(_CHANGE_NOTICE_VECTOR, IPL2) change_notice_ISR(void);
+void debounce(unsigned int mS);
