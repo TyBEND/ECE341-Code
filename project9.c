@@ -23,6 +23,8 @@ main(void)
     system_init();
     pwm_init(40, 1000);
     LCD_init();
+    writeLCD(0,1);
+    LCD_puts("PWM = 40%");
     while(1)
     {
     }
@@ -37,8 +39,8 @@ void system_init(void)
     
     // Initialize timer2 to generate interrupt every ms with GP lvl 2 and SGP lvl 0
     OpenTimer2(T2_ON | T2_PS_1_1, (PeriodR2));
-    mT1SetIntPriority(2);
-    mT1SetIntSubPriority(0);
+    mT2SetIntPriority(2);
+    mT2SetIntSubPriority(0);
     
     // Initialize Change Notice
     mCNOpen(CN_ON, (CN8_ENABLE | CN9_ENABLE), 0);  // Enable CN for BTN1 and BTN2
@@ -53,7 +55,7 @@ void system_init(void)
     INTEnableSystemMultiVectoredInt(); 
     INTEnableInterrupts();
     mT2IntEnable(1);
-    mCNIntEnable(1);
+    mCNIntEnable(1);   
 }
 
 void __ISR(_CHANGE_NOTICE_VECTOR, IPL2) change_notice_ISR(void)
