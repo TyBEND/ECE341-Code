@@ -14,7 +14,10 @@
 #include "pwm.h"
 #include "input_capture.h"
 
+#define fPB 10000000               // Peripheral Bus clock at 10MHz
+#define tps 256                    // Prescale value for timer 3
 float RPS;
+
 
 void input_capture_init(void)
 {
@@ -58,7 +61,7 @@ void __ISR(_INPUT_CAPTURE_5_VECTOR, IPL3) Capture5(void)
  		speed += speed_array[i];        // Find the sum of the elements in the array
  	}
  	speed = (speed/16.0);         // Find average by dividing by the total    
- 	speed = (10000000/(speed * 256));       // Use average speed value to determine rps value
+ 	speed = (fPB/(speed * tps));       // Use average speed value to determine rps value
  	RPS = speed;     // Save rps value as global variable 
     mIC5ClearIntFlag(); // Clears interrupt flag
 
